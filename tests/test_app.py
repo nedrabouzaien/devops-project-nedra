@@ -20,3 +20,24 @@ def test_get_tasks():
     client = app.test_client()
     res = client.get("/tasks")
     assert res.status_code == 200
+def test_update_task():
+    client = app.test_client()
+    client.post(
+        "/tasks",
+        data=json.dumps({"title": "Task to update"}),
+        content_type="application/json"
+    )
+
+    res = client.put("/tasks/1")
+    assert res.status_code == 200
+    assert res.json["completed"] is True
+def test_delete_task():
+    client = app.test_client()
+    client.post(
+        "/tasks",
+        data=json.dumps({"title": "Task to delete"}),
+        content_type="application/json"
+    )
+
+    res = client.delete("/tasks/1")
+    assert res.status_code == 204
