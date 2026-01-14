@@ -65,4 +65,4 @@ jobs:
           fail_action: false
           allow_issue_writing: false
           cmd_options: '-I'
-          artifact_name: zap-report
+          artifact_name: zapreport
