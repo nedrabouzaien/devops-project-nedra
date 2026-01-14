@@ -1,6 +1,6 @@
 # 🚀 DevOps Project – Flask API
 
-This project demonstrates a **complete DevOps pipeline** for a Python Flask API, including **CI/CD**, **containerization**, **security testing (SAST & DAST)**, **observability**, and **Kubernetes deployment**.
+This project demonstrates a **complete DevOps pipeline** for a Python Flask API, including **CI/CD**, **containerization**, **security testing (SAST & DAST)**, **observability**, and **Kubernetes deployment (Kind)**.
 
 ---
 
@@ -24,6 +24,7 @@ Developer → GitHub → GitHub Actions (CI/CD)
                        ├─ Tests (pytest)
                        ├─ SAST (Bandit)
                        └─ Docker Image Build
+                       └─ DAST(owasp ZAP)
 
 Local Runtime:
 - Docker Compose
@@ -188,6 +189,7 @@ The application exposes metrics endpoint for monitoring:
 
 ```
 GET /metrics
+http://localhost:5000/metrics
 ```
 
 Can be integrated with Prometheus in advanced setups.
@@ -206,21 +208,33 @@ k8s/
 
 ### Deploy to Kubernetes
 
-```bash
+# 1️⃣ Se placer dans ton projet
+
+
+# 2️⃣ Vérifier ton cluster kind
+kind get clusters
+
+# 3️⃣ Vérifier que kubectl utilise le bon contexte
+kubectl config use-context kind-devops-project-cluster
+
+# 4️⃣ Déployer tes fichiers k8s
 kubectl apply -f k8s/
-```
 
-### Check resources
-
-```bash
+# 5️⃣ Vérifier les pods
 kubectl get pods
+
+# 6️⃣ Vérifier les services
 kubectl get services
+
+# 7️⃣ Forward le port pour tester ton API
+kubectl port-forward service/devops-api-service 5000:5000
+
 ```
 
 ### Access application
 
 ```
-http://localhost:30007
+http://localhost:5000
 ```
 
 ---
@@ -263,6 +277,7 @@ GET /metrics
 ├── tests/
 ├── .github/workflows/
 │   └── ci.yml
+    └── dast.yml
 └── README.md
 ```
 
