@@ -30,7 +30,7 @@ jobs:
     - name: Run SAST (Bandit)
       run: |
         pip install bandit
-        bandit -r . -x tests
+        bandit -r . -x tests -ll
 
 
     - name: Set up Docker
