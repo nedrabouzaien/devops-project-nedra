@@ -64,4 +64,5 @@ jobs:
           target: 'http://localhost:5000'
           fail_action: false
           allow_issue_writing: false
-          artifact_name: ""
+          cmd_options: '-I'
+          artifact_name: zap-report
