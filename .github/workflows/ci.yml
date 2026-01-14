@@ -61,4 +61,12 @@ jobs:
         with:
           target: 'http://localhost:5000'
           fail_action: false
-          create_github_issue: false
+          allow_issue_writing: false
+      - name: Archive ZAP report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dast-report
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
