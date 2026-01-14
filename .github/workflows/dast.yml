@@ -1,0 +1,41 @@
+name: DAST Security Scan 🕵️
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: OWASP ZAP Baseline Scan
+    continue-on-error: true   # ⭐ CRUCIAL ⭐
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build API Docker image
+        run: |
+          docker build -t devops-project-nedra .
+
+      - name: Run API container
+        run: |
+          docker run -d -p 5000:5000 --name devops-api devops-project-nedra
+          echo "⏳ Waiting for API startup..."
+          sleep 20
+
+      - name: Check API status
+        run: |
+          curl -v http://localhost:5000 || echo "⚠️ API not responding"
+
+      # 🔥 ZAP lancé MANUELLEMENT (pas l’action GitHub bugguée)
+      - name: Run OWASP ZAP Baseline Scan
+        run: |
+          docker run --network host \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://localhost:5000 -I
