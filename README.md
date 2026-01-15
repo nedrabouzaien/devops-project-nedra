@@ -190,6 +190,9 @@ The application exposes metrics endpoint for monitoring:
 ```
 GET /metrics
 http://localhost:5000/metrics
+
+# Forward the port to  teste metrics 
+kubectl port-forward -n monitoring service/prometheus-service 9090:9090
 ```
 
 Can be integrated with Prometheus in advanced setups.
